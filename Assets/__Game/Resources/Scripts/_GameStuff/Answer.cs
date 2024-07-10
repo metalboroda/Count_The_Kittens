@@ -1,9 +1,6 @@
 using __Game.Resources.Scripts.EventBus;
-using Assets.__Game.Resources.Scripts.Game.States;
-using Assets.__Game.Scripts.Infrastructure;
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,110 +9,97 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 {
   public class Answer : MonoBehaviour
   {
-    [SerializeField] private string _answerNumber;
-    [Header("References")]
-    [SerializeField] private Button _answerButton;
-    [SerializeField] private TextMeshProUGUI _numberText;
-    [Header("Cats")]
-    [SerializeField] private GameObject _catsContainer;
+    public event Action NumberButtonClicked;
+
+    [field: Header("References")]
+    [field: SerializeField] public Button AnswerButton;
+    [SerializeField] private Button _numberButton;
     [Space]
     [SerializeField] private Color _defaultColor;
     [SerializeField] private Color _selectionColor;
-    [Header("Stupor settings")]
-    [SerializeField] private float _stuporTimeoutSeconds = 30f;
+    [Space]
+    [SerializeField] private Image _catImage;
+    [Header("Audio")]
+    [SerializeField] private AudioClip _answerClip;
     [Header("Tutorial")]
     [SerializeField] private bool _allowTutorial;
-    [SerializeField] private GameObject _tutorialFinger;
+    [SerializeField] private GameObject _tutorialFingerCat;
+    [SerializeField] private GameObject _tutorialFingerNumber;
 
-    private Image[] _catsImage;
-    private Coroutine _stuporTimeoutRoutine;
+    public bool Completed { get; private set; }
 
-    private GameBootstrapper _gameBootstrapper;
+    private int _answerNumber;
 
-    private void Awake()
-    {
-      _gameBootstrapper = GameBootstrapper.Instance;
-
+    private void Awake() {
       GetAllCatsSpriteRenderers();
     }
 
-    private void OnEnable()
-    {
-      _answerButton.onClick.AddListener(() =>
-      {
+    private void OnEnable() {
+      AnswerButton.onClick.AddListener(() => {
         EnableNumberObject();
 
-        _answerButton.interactable = false;
+        AnswerButton.interactable = false;
 
         ChangeCatsColors();
       });
+
+      _numberButton.onClick.AddListener(() => {
+        Completed = true;
+
+        if (_allowTutorial == true)
+          _tutorialFingerNumber.SetActive(false);
+
+        NumberButtonClicked?.Invoke();
+      });
     }
 
-    private void Start()
-    {
-      _numberText.transform.localScale = Vector3.zero;
-      _numberText.gameObject.SetActive(false);
+    private void Start() {
+      _numberButton.transform.localScale = Vector3.zero;
+      _numberButton.gameObject.SetActive(false);
 
-      _numberText.text = _answerNumber;
+      if (_allowTutorial == true) {
+        _tutorialFingerCat.SetActive(true);
+      }
+      else {
+        _tutorialFingerCat.SetActive(false);
+      }
 
-      if (_allowTutorial == true)
-        _tutorialFinger.SetActive(true);
-      else
-        _tutorialFinger.SetActive(false);
+      _tutorialFingerNumber.SetActive(false);
     }
 
-    private void EnableNumberObject()
-    {
-      _numberText.gameObject.SetActive(true);
+    private void EnableNumberObject() {
+      EventBus<EventStructs.UiButtonEvent>.Raise(new EventStructs.UiButtonEvent());
+
+      _numberButton.gameObject.SetActive(true);
 
       Vector3 scale = new Vector3(1, 1, 1);
 
-      _numberText.transform.DOScale(scale, 0.5f);
+      _numberButton.transform.DOScale(scale, 0.5f)
+        .OnComplete(() => {
+          EventBus<EventStructs.VariantAudioClickedEvent>.Raise(new EventStructs.VariantAudioClickedEvent { AudioClip = _answerClip });
+        });
 
-      if (_gameBootstrapper != null)
-        _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameWinState(_gameBootstrapper), 1f, this);
-
-      if (_allowTutorial == true)
-        _tutorialFinger.SetActive(false);
-    }
-
-    private void ResetAndStartStuporTimer()
-    {
-      if (_stuporTimeoutRoutine != null)
-        StopCoroutine(_stuporTimeoutRoutine);
-
-      _stuporTimeoutRoutine = StartCoroutine(DoStuporTimerCoroutine());
-    }
-
-    private IEnumerator DoStuporTimerCoroutine()
-    {
-      yield return new WaitForSeconds(_stuporTimeoutSeconds);
-
-      EventBus<EventStructs.StuporEvent>.Raise(new EventStructs.StuporEvent());
-
-      ResetAndStartStuporTimer();
-    }
-
-    private void GetAllCatsSpriteRenderers()
-    {
-      _catsImage = _catsContainer.GetComponentsInChildren<Image>();
-
-      foreach (var c in _catsImage)
-      {
-        c.color = _defaultColor;
+      if (_allowTutorial == true) {
+        _tutorialFingerCat.SetActive(false);
+        _tutorialFingerNumber.SetActive(true);
       }
     }
 
-    private void ChangeCatsColors()
-    {
+    public void SetAnswerNumber(int number) {
+      _answerNumber = number;
+
+      _numberButton.GetComponentInChildren<TextMeshProUGUI>().text = _answerNumber.ToString();
+    }
+
+    private void GetAllCatsSpriteRenderers() {
+      _catImage.color = _defaultColor;
+    }
+
+    private void ChangeCatsColors() {
       Sequence sequence = DOTween.Sequence();
 
-      foreach (var spriteRenderer in _catsImage)
-      {
-        sequence.Append(spriteRenderer.DOColor(_selectionColor, 0.2f))
-                .Append(spriteRenderer.DOColor(_defaultColor, 0.2f));
-      }
-
+      sequence.Append(_catImage.DOColor(_selectionColor, 0.2f))
+        .Append(_catImage.DOColor(_defaultColor, 0.2f));
       sequence.Play();
     }
   }
