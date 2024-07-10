@@ -9,6 +9,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
   public class AnswersContainer : MonoBehaviour
   {
     [SerializeField] private Answer[] _answers;
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] _numbersClips;
     [Header("Stupor settings")]
     [SerializeField] private float _stuporTimeoutSeconds = 30f;
 
@@ -25,6 +27,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       foreach (var answer in _answers) {
         answer.AnswerButton.onClick.AddListener(() => AssignNumber(answer));
         answer.NumberButtonClicked += CheckForAllAnswersCompleted;
+        answer.NumberButtonClickedInt += (number) => PlayNumberClip(number);
       }
     }
 
@@ -32,6 +35,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       foreach (var answer in _answers) {
         answer.AnswerButton.onClick.RemoveListener(() => AssignNumber(answer));
         answer.NumberButtonClicked -= CheckForAllAnswersCompleted;
+        answer.NumberButtonClickedInt -= (number) => PlayNumberClip(number);
       }
     }
 
@@ -39,6 +43,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       _currentNumber = 1;
 
       ResetAndStartStuporTimer();
+
+      EventBus<EventStructs.VariantsAssignedEvent>.Raise(new EventStructs.VariantsAssignedEvent());
     }
 
     private void AssignNumber(Answer answer) {
@@ -57,7 +63,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       ResetAndStartStuporTimer();
 
       if (_gameBootstrapper != null) {
-        _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameWinState(_gameBootstrapper), 1.5f, this);
+        _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameWinState(_gameBootstrapper), 2f, this);
 
         StopCoroutine(_stuporTimeoutRoutine);
       }
@@ -76,6 +82,12 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       EventBus<EventStructs.StuporEvent>.Raise(new EventStructs.StuporEvent());
 
       ResetAndStartStuporTimer();
+    }
+
+    private void PlayNumberClip(int number) {
+      if (number > 0 && number <= _numbersClips.Length) {
+        EventBus<EventStructs.VariantAudioClickedEvent>.Raise(new EventStructs.VariantAudioClickedEvent { AudioClip = _numbersClips[number - 1] });
+      }
     }
   }
 }

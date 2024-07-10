@@ -10,21 +10,21 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
   public class Answer : MonoBehaviour
   {
     public event Action NumberButtonClicked;
+    public event Action<int> NumberButtonClickedInt;
 
-    [field: Header("References")]
-    [field: SerializeField] public Button AnswerButton;
-    [SerializeField] private Button _numberButton;
-    [Space]
+    [SerializeField] private Image _catImage;
     [SerializeField] private Color _defaultColor;
     [SerializeField] private Color _selectionColor;
     [Space]
-    [SerializeField] private Image _catImage;
-    [Header("Audio")]
-    [SerializeField] private AudioClip _answerClip;
+    [SerializeField] private Color _numberButtonDefaultColor;
+    [SerializeField] private Color _numberButtonSelectionColor;
     [Header("Tutorial")]
     [SerializeField] private bool _allowTutorial;
     [SerializeField] private GameObject _tutorialFingerCat;
     [SerializeField] private GameObject _tutorialFingerNumber;
+    [field: Header("References")]
+    [field: SerializeField] public Button AnswerButton;
+    [SerializeField] private Button _numberButton;
 
     public bool Completed { get; private set; }
 
@@ -41,15 +41,24 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
         AnswerButton.interactable = false;
 
         ChangeCatsColors();
+
+        EventBus<EventStructs.UiButtonEvent>.Raise(new EventStructs.UiButtonEvent());
       });
 
       _numberButton.onClick.AddListener(() => {
         Completed = true;
 
+        _numberButton.interactable = false;
+
         if (_allowTutorial == true)
           _tutorialFingerNumber.SetActive(false);
 
+        ChangeNumberButtonColors();
+
         NumberButtonClicked?.Invoke();
+        NumberButtonClickedInt?.Invoke(_answerNumber);
+
+        EventBus<EventStructs.UiButtonEvent>.Raise(new EventStructs.UiButtonEvent());
       });
     }
 
@@ -68,16 +77,11 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     }
 
     private void EnableNumberObject() {
-      EventBus<EventStructs.UiButtonEvent>.Raise(new EventStructs.UiButtonEvent());
-
       _numberButton.gameObject.SetActive(true);
 
       Vector3 scale = new Vector3(1, 1, 1);
 
-      _numberButton.transform.DOScale(scale, 0.5f)
-        .OnComplete(() => {
-          EventBus<EventStructs.VariantAudioClickedEvent>.Raise(new EventStructs.VariantAudioClickedEvent { AudioClip = _answerClip });
-        });
+      _numberButton.transform.DOScale(scale, 0.5f);
 
       if (_allowTutorial == true) {
         _tutorialFingerCat.SetActive(false);
@@ -99,7 +103,15 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       Sequence sequence = DOTween.Sequence();
 
       sequence.Append(_catImage.DOColor(_selectionColor, 0.2f))
-        .Append(_catImage.DOColor(_defaultColor, 0.2f));
+              .Append(_catImage.DOColor(_defaultColor, 0.2f));
+      sequence.Play();
+    }
+
+    private void ChangeNumberButtonColors() {
+      Sequence sequence = DOTween.Sequence();
+
+      sequence.Append(_numberButton.GetComponentInChildren<TextMeshProUGUI>().DOColor(_numberButtonSelectionColor, 0.2f))
+              .Append(_numberButton.GetComponentInChildren<TextMeshProUGUI>().DOColor(_numberButtonDefaultColor, 0.2f));
       sequence.Play();
     }
   }
