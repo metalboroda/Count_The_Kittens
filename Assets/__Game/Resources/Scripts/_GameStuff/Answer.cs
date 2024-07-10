@@ -1,4 +1,6 @@
 using __Game.Resources.Scripts.EventBus;
+using Assets.__Game.Resources.Scripts.Game.States;
+using Assets.__Game.Scripts.Infrastructure;
 using DG.Tweening;
 using System;
 using TMPro;
@@ -30,7 +32,13 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
     private int _answerNumber;
 
+    private GameBootstrapper _gameBootstrapper;
+    private AnswersContainer _answersContainer;
+
     private void Awake() {
+      _gameBootstrapper = GameBootstrapper.Instance;
+      _answersContainer = GetComponentInParent<AnswersContainer>();
+
       GetAllCatsSpriteRenderers();
     }
 
@@ -59,6 +67,11 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
         NumberButtonClickedInt?.Invoke(_answerNumber);
 
         EventBus<EventStructs.UiButtonEvent>.Raise(new EventStructs.UiButtonEvent());
+
+        if (_answerNumber == _answersContainer.CurrentNumber - 1)
+          _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameWinState(_gameBootstrapper), 1f, this);
+        else
+          _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameLoseState(_gameBootstrapper), 1f, this);
       });
     }
 

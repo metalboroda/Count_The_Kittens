@@ -1,5 +1,4 @@
 using __Game.Resources.Scripts.EventBus;
-using Assets.__Game.Resources.Scripts.Game.States;
 using Assets.__Game.Scripts.Infrastructure;
 using System.Collections;
 using UnityEngine;
@@ -14,7 +13,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [Header("Stupor settings")]
     [SerializeField] private float _stuporTimeoutSeconds = 30f;
 
-    private int _currentNumber;
+    public int CurrentNumber { get; private set; }
+
     private Coroutine _stuporTimeoutRoutine;
 
     private GameBootstrapper _gameBootstrapper;
@@ -40,7 +40,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     }
 
     private void Start() {
-      _currentNumber = 1;
+      CurrentNumber = 1;
 
       ResetAndStartStuporTimer();
 
@@ -48,9 +48,9 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     }
 
     private void AssignNumber(Answer answer) {
-      answer.SetAnswerNumber(_currentNumber);
+      answer.SetAnswerNumber(CurrentNumber);
 
-      _currentNumber++;
+      CurrentNumber++;
     }
 
     private void CheckForAllAnswersCompleted() {
@@ -61,12 +61,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       }
 
       ResetAndStartStuporTimer();
-
-      if (_gameBootstrapper != null) {
-        _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameWinState(_gameBootstrapper), 2f, this);
-
-        StopCoroutine(_stuporTimeoutRoutine);
-      }
+      StopCoroutine(_stuporTimeoutRoutine);
     }
 
     private void ResetAndStartStuporTimer() {
