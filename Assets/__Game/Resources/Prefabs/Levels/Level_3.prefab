@@ -2620,7 +2620,7 @@ MonoBehaviour:
   _showAnswerButtonAtOnce: 1
   _answerButton: {fileID: 1903486951908363290}
   _answerButtonText: {fileID: 5688239524999776827}
-  _noAudio: 1
+  _noAudio: 0
   _tutorialFinger: {fileID: 8124440257024330018}
 --- !u!114 &5236055491537881001
 MonoBehaviour:
@@ -3171,7 +3171,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1091326377446527428, guid: a454cc821da5e1b419971d0230763865, type: 3}
       propertyPath: _noAudio
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1091326377446527428, guid: a454cc821da5e1b419971d0230763865, type: 3}
       propertyPath: _answerData

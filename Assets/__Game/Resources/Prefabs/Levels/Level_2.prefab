@@ -4842,6 +4842,10 @@ PrefabInstance:
       propertyPath: m_Spacing
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 7942468345822059732, guid: a454cc821da5e1b419971d0230763865, type: 3}
+      propertyPath: _maxTime
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 8974865717979555190, guid: a454cc821da5e1b419971d0230763865, type: 3}
       propertyPath: m_Name
       value: Level_2

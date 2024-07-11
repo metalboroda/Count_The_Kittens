@@ -1269,7 +1269,7 @@ MonoBehaviour:
   _showAnswerButtonAtOnce: 1
   _answerButton: {fileID: 599131388208872808}
   _answerButtonText: {fileID: 3742221531709680357}
-  _noAudio: 1
+  _noAudio: 0
   _tutorialFinger: {fileID: 8124440257024330018}
 --- !u!114 &6526013534226332220
 MonoBehaviour:
