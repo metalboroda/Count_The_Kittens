@@ -1,3 +1,4 @@
+using __Game.Resources.Scripts.EventBus;
 using DG.Tweening;
 using System;
 using TMPro;
@@ -12,12 +13,14 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     public event Action<Answer> CatButtonPressed;
     public event Action<string> AnswerButtonPressed;
 
-    [Header("Settings")]
-    [SerializeField] private string _answerButtonValue;
-    [Header("")]
     [Header("References")]
+    [SerializeField] private AnswerDataSo _answerData;
+    [Header("Image")]
+    [SerializeField] private Image _catImage;
     [Header("Buttons")]
     [SerializeField] private Button _catButton;
+    [Space]
+    [SerializeField] private bool _showAnswerButtonAtOnce;
     [SerializeField] private Button _answerButton;
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI _numberText;
@@ -27,19 +30,11 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [SerializeField] private GameObject _catFinger;
     [SerializeField] private GameObject _answerFinger;
     [Header("Audio")]
-    [SerializeField] private float _minRandomPitch = 0.95f;
-    [SerializeField] private float _maxRandomPitch = 1.05f;
-    [Header("")]
     [SerializeField] private AudioClip _meowClip;
 
-    private AudioSource _audioSource;
-
-    private void Awake() {
-      _audioSource = GetComponent<AudioSource>();
-    }
-
     private void Start() {
-      SetAnswerButtonText();
+      SetupAnswerButtonText();
+      SetupCatImage();
       SubscribeButtons();
       HandleTexts();
       HandleButtons();
@@ -53,8 +48,12 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       _numberText.GetComponent<DOTweenAnimation>().DOPlay();
     }
 
-    private void SetAnswerButtonText() {
-      _answerButtonText.text = _answerButtonValue;
+    private void SetupAnswerButtonText() {
+      _answerButtonText.text = _answerData.AnswerValue;
+    }
+
+    private void SetupCatImage() {
+      _catImage.sprite = _answerData.CatSprite;
     }
 
     private void SubscribeButtons() {
@@ -63,7 +62,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
         _catButton.interactable = false;
 
-        PlayAudioClipWithRandomPitch(_meowClip);
+        EventBus<EventStructs.VariantAudioClickedEvent>.Raise(new EventStructs.VariantAudioClickedEvent { AudioClip = _meowClip });
 
         _answerButton.gameObject.SetActive(true);
         _answerButton.GetComponent<DOTweenAnimation>().DOPlay();
@@ -74,6 +73,10 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       _answerButton.onClick.AddListener(() => {
         AnswerButtonPressed?.Invoke(_answerButtonText.text);
 
+        _answerButton.interactable = false;
+
+        EventBus<EventStructs.VariantAudioClickedEvent>.Raise(new EventStructs.VariantAudioClickedEvent { AudioClip = _answerData.AnswerClip });
+
         TutorialSwitch(3);
       });
     }
@@ -83,17 +86,13 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     }
 
     private void HandleButtons() {
-      _answerButton.gameObject.SetActive(false);
-    }
-
-    private void PlayAudioClipWithRandomPitch(AudioClip audioClip) {
-      if (_audioSource == null) return;
-
-      float randomPitch = Random.Range(_minRandomPitch, _maxRandomPitch);
-
-      _audioSource.pitch = randomPitch;
-
-      _audioSource.PlayOneShot(audioClip);
+      if (_showAnswerButtonAtOnce == true) {
+        _answerButton.gameObject.SetActive(true);
+        _answerButton.GetComponent<DOTweenAnimation>().DOPlay();
+      }
+      else {
+        _answerButton.gameObject.SetActive(false);
+      }
     }
 
     private void TutorialSwitch(int stage) {

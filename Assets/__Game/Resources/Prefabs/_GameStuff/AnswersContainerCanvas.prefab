@@ -313,7 +313,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b3246c5d30ed08342be144cfea14a5c9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0be7e9f86f95ad54e9a7412027fa6c13, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -348,7 +348,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 0.78431374}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1231,16 +1231,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f9969018a1c74c408c826a6cb4f0727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _answerButtonValue: 1
+  _answerData: {fileID: 11400000, guid: 6ea3067b611b68040a533c43e03eddef, type: 2}
+  _catImage: {fileID: 2125905815077717688}
   _catButton: {fileID: 2317937005101209941}
+  _showAnswerButtonAtOnce: 1
   _answerButton: {fileID: 4944317645069014345}
   _numberText: {fileID: 788613499439489513}
   _answerButtonText: {fileID: 2383072063456206458}
   _tutorial: 0
   _catFinger: {fileID: 618953351192269330}
   _answerFinger: {fileID: 3227069993118325836}
-  _minRandomPitch: 0.95
-  _maxRandomPitch: 1.05
   _meowClip: {fileID: 8300000, guid: c679ae3092415db4483d4380fbc5fd9c, type: 3}
 --- !u!1 &4948473559500655731
 GameObject:
@@ -1426,6 +1426,7 @@ GameObject:
   - component: {fileID: 6460893061015575801}
   - component: {fileID: 6460893061015575806}
   - component: {fileID: 4523781460670342609}
+  - component: {fileID: 78230630682903720}
   - component: {fileID: 6460893061015575802}
   m_Layer: 5
   m_Name: AnswersContainerCanvas
@@ -1543,6 +1544,102 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!82 &78230630682903720
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6460893061015575807}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -2839873659649352041, guid: 618f0dc0539fcf947aaa814bc718890b, type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &6460893061015575802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1556,8 +1653,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _correctValue: 1
-  _answers:
-  - {fileID: 3301203997624477784}
+  _valueClipDelay: 0.5
+  _valuesClips:
+  - {fileID: 8300000, guid: a85cbd4ed51940a4fbdf98b151d32e3d, type: 3}
+  - {fileID: 8300000, guid: 7bcb659133eec0f4ab61e3dde356ce7d, type: 3}
+  - {fileID: 8300000, guid: ca6d3fe7f2bb74b499d0fa349d0252e3, type: 3}
+  - {fileID: 8300000, guid: 45472025beae83c4982f5730c40c85f2, type: 3}
 --- !u!1 &6702211161811186589
 GameObject:
   m_ObjectHideFlags: 0
