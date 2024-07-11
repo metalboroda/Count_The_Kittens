@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ebe50bdb305c2f43a86a8073614b831, type: 3}
-  m_Name: 4
+  m_Name: 4_Cat
   m_EditorClassIdentifier: 
   AnswerValue: 4
   CatSprite: {fileID: 21300000, guid: 7c19d4062be12014784f6baacf7d1a22, type: 3}

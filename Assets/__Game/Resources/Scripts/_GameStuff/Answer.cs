@@ -11,7 +11,6 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
   public class Answer : MonoBehaviour
   {
     public event Action<Answer> CatButtonPressed;
-    public event Action<string> AnswerButtonPressed;
 
     [Header("References")]
     [SerializeField] private AnswerDataSo _answerData;
@@ -19,12 +18,9 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [SerializeField] private Image _catImage;
     [Header("Buttons")]
     [SerializeField] private Button _catButton;
-    [Space]
-    [SerializeField] private bool _showAnswerButtonAtOnce;
-    [SerializeField] private Button _answerButton;
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI _numberText;
-    [SerializeField] private TextMeshProUGUI _answerButtonText;
+   
     [Header("Tutorial")]
     [SerializeField] private bool _tutorial;
     [SerializeField] private GameObject _catFinger;
@@ -33,11 +29,9 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [SerializeField] private AudioClip _meowClip;
 
     private void Start() {
-      SetupAnswerButtonText();
       SetupCatImage();
       SubscribeButtons();
       HandleTexts();
-      HandleButtons();
       TutorialSwitch(1);
     }
 
@@ -46,10 +40,6 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
       _numberText.gameObject.SetActive(true);
       _numberText.GetComponent<DOTweenAnimation>().DOPlay();
-    }
-
-    private void SetupAnswerButtonText() {
-      _answerButtonText.text = _answerData.AnswerValue;
     }
 
     private void SetupCatImage() {
@@ -64,35 +54,14 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
         EventBus<EventStructs.VariantAudioClickedEvent>.Raise(new EventStructs.VariantAudioClickedEvent { AudioClip = _meowClip });
 
-        _answerButton.gameObject.SetActive(true);
-        _answerButton.GetComponent<DOTweenAnimation>().DOPlay();
-
         TutorialSwitch(2);
       });
 
-      _answerButton.onClick.AddListener(() => {
-        AnswerButtonPressed?.Invoke(_answerButtonText.text);
-
-        _answerButton.interactable = false;
-
-        EventBus<EventStructs.VariantAudioClickedEvent>.Raise(new EventStructs.VariantAudioClickedEvent { AudioClip = _answerData.AnswerClip });
-
-        TutorialSwitch(3);
-      });
+      
     }
 
     private void HandleTexts() {
       _numberText.gameObject.SetActive(false);
-    }
-
-    private void HandleButtons() {
-      if (_showAnswerButtonAtOnce == true) {
-        _answerButton.gameObject.SetActive(true);
-        _answerButton.GetComponent<DOTweenAnimation>().DOPlay();
-      }
-      else {
-        _answerButton.gameObject.SetActive(false);
-      }
     }
 
     private void TutorialSwitch(int stage) {

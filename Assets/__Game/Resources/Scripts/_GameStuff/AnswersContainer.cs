@@ -1,3 +1,4 @@
+using __Game.Resources.Scripts.EventBus;
 using Assets.__Game.Resources.Scripts.Game.States;
 using Assets.__Game.Scripts.Infrastructure;
 using System.Collections;
@@ -12,28 +13,31 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [SerializeField] private AudioClip[] _valuesClips;
 
     private Answer[] _answers;
+    private AnswerButton[] _answersButton;
     private int _currentTextNumber = 1;
-
-    private AudioSource _audioSource;
 
     private GameBootstrapper _gameBootstrapper;
 
     private void Awake() {
       _gameBootstrapper = GameBootstrapper.Instance;
 
-      _audioSource = GetComponent<AudioSource>();
-
       _answers = GetComponentsInChildren<Answer>();
+      _answersButton = GetComponentsInChildren<AnswerButton>();
     }
 
     private void Start() {
+      EventBus<EventStructs.VariantsAssignedEvent>.Raise(new EventStructs.VariantsAssignedEvent());
+
       AnswersSubscription();
     }
 
     private void AnswersSubscription() {
       foreach (var answer in _answers) {
         answer.CatButtonPressed += SetAnswerNumberText;
-        answer.AnswerButtonPressed += OnAnswerButton;
+      }
+
+      foreach (var button in _answersButton) {
+        button.AnswerButtonPressed += OnAnswerButton;
       }
     }
 
@@ -61,7 +65,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     private IEnumerator DoPlayTextNumberClip(int index) {
       yield return new WaitForSeconds(_valueClipDelay);
 
-      _audioSource.PlayOneShot(_valuesClips[index]);
+      EventBus<EventStructs.VariantAudioClickedEvent>.Raise(new EventStructs.VariantAudioClickedEvent { AudioClip = _valuesClips[index] });
     }
   }
 }

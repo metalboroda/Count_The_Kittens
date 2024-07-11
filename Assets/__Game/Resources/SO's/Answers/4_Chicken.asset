@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ebe50bdb305c2f43a86a8073614b831, type: 3}
-  m_Name: 1
+  m_Name: 4_Chicken
   m_EditorClassIdentifier: 
-  AnswerValue: 1
-  CatSprite: {fileID: 21300000, guid: 6c7f6d8639239ff47900fd8bdcb950d8, type: 3}
-  AnswerClip: {fileID: 8300000, guid: a85cbd4ed51940a4fbdf98b151d32e3d, type: 3}
+  AnswerValue: 4
+  CatSprite: {fileID: 21300000, guid: 6daf62483153ca241a25739ca0a94e77, type: 3}
+  AnswerClip: {fileID: 8300000, guid: 45472025beae83c4982f5730c40c85f2, type: 3}
