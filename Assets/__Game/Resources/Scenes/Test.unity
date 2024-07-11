@@ -458,6 +458,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3301203997624477784, guid: 9bb0d7b91180299408765dff00046f3d, type: 3}
+      propertyPath: _tutorial
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6460893061015575803, guid: 9bb0d7b91180299408765dff00046f3d, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -545,6 +549,22 @@ PrefabInstance:
     - target: {fileID: 6460893061015575807, guid: 9bb0d7b91180299408765dff00046f3d, type: 3}
       propertyPath: m_Name
       value: AnswersContainerCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527695755449691566, guid: 9bb0d7b91180299408765dff00046f3d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527695755449691566, guid: 9bb0d7b91180299408765dff00046f3d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527695755449691566, guid: 9bb0d7b91180299408765dff00046f3d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527695755449691566, guid: 9bb0d7b91180299408765dff00046f3d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bb0d7b91180299408765dff00046f3d, type: 3}

@@ -92,6 +92,9 @@ MonoBehaviour:
     - 0c6d43d5c0be20a4d8a227493f8d4d68
     - 704bc9fafd130db4483437ffb82e5f99
     - 9f80792dcd2829e41b1f075e7245ca5b
+    - 0fdbf67b48329b743a64d4bde10704be
+    - 7ecf446747ff66b4d997961dda91f696
+    - d57e1d4354e17bf4b86fdc192505166c
     values:
     - guid: 00000000000000001000000000000000
       iColor: 0
@@ -482,4 +485,19 @@ MonoBehaviour:
       iColor: 0
       autoIcon: 
       customIcon: 
+      autoIconDirty: 0
+    - guid: 0fdbf67b48329b743a64d4bde10704be
+      iColor: 0
+      autoIcon: AudioClip Icon
+      customIcon: none
+      autoIconDirty: 0
+    - guid: 7ecf446747ff66b4d997961dda91f696
+      iColor: 0
+      autoIcon: 
+      customIcon: 
+      autoIconDirty: 0
+    - guid: d57e1d4354e17bf4b86fdc192505166c
+      iColor: 0
+      autoIcon: AudioClip Icon
+      customIcon: none
       autoIconDirty: 0
