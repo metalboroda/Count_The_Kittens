@@ -8,6 +8,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 {
   public class AnswersContainer : MonoBehaviour
   {
+    [SerializeField] private string _correctValue;
+    [Header("")]
     [SerializeField] private float _valueClipDelay = 0.5f;
     [Space]
     [SerializeField] private AudioClip[] _valuesClips;
@@ -50,7 +52,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     }
 
     private void OnAnswerButton(string buttonValue) {
-      if (buttonValue == _answers.Length.ToString()) {
+      if (buttonValue == _correctValue) {
         _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameWinState(_gameBootstrapper), 1.5f, this);
       }
       else {

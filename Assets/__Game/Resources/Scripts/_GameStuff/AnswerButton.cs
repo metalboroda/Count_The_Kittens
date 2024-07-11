@@ -17,6 +17,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [SerializeField] private Button _answerButton;
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI _answerButtonText;
+    [Header("Audio")]
+    [SerializeField] private bool _noAudio;
     [Header("Tutorial")]
     [SerializeField] private GameObject _tutorialFinger;
 
@@ -32,7 +34,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
         _answerButton.interactable = false;
 
-        EventBus<EventStructs.VariantAudioClickedEvent>.Raise(new EventStructs.VariantAudioClickedEvent { AudioClip = _answerData.AnswerClip });
+        if (_noAudio == false)
+          EventBus<EventStructs.VariantAudioClickedEvent>.Raise(new EventStructs.VariantAudioClickedEvent { AudioClip = _answerData.AnswerClip });
 
         _tutorialFinger?.SetActive(false);
       });

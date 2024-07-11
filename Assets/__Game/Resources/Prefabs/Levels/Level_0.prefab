@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: _allowTutorial
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5496883891528770935, guid: a454cc821da5e1b419971d0230763865, type: 3}
+      propertyPath: _correctValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6121354324933825194, guid: a454cc821da5e1b419971d0230763865, type: 3}
       propertyPath: _tutorial
       value: 1

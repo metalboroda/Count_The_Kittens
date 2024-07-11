@@ -1,4 +1,6 @@
 using __Game.Resources.Scripts.EventBus;
+using Assets.__Game.Resources.Scripts.Game.States;
+using Assets.__Game.Scripts.Infrastructure;
 using DG.Tweening;
 using System;
 using TMPro;
@@ -12,6 +14,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
   {
     public event Action<Answer> CatButtonPressed;
 
+    [SerializeField] private bool _instantLose;
     [Header("References")]
     [SerializeField] private AnswerDataSo _answerData;
     [Header("Image")]
@@ -20,13 +23,19 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [SerializeField] private Button _catButton;
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI _numberText;
-   
+
     [Header("Tutorial")]
     [SerializeField] private bool _tutorial;
     [SerializeField] private GameObject _catFinger;
     [SerializeField] private GameObject _answerFinger;
     [Header("Audio")]
     [SerializeField] private AudioClip _meowClip;
+
+    private GameBootstrapper _gameBootstrapper;
+
+    private void Awake() {
+      _gameBootstrapper = GameBootstrapper.Instance;
+    }
 
     private void Start() {
       SetupCatImage();
@@ -48,6 +57,12 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
     private void SubscribeButtons() {
       _catButton.onClick.AddListener(() => {
+        if (_instantLose == true) {
+          _gameBootstrapper.StateMachine.ChangeState(new GameLoseState(_gameBootstrapper));
+
+          return;
+        }
+
         CatButtonPressed?.Invoke(this);
 
         _catButton.interactable = false;
@@ -57,7 +72,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
         TutorialSwitch(2);
       });
 
-      
+
     }
 
     private void HandleTexts() {
