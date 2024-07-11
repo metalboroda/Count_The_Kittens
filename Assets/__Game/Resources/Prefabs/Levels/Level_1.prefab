@@ -353,6 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f9969018a1c74c408c826a6cb4f0727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _instantLose: 0
   _answerData: {fileID: 11400000, guid: 017521df462d41f4d8111e792800cae0, type: 2}
   _catImage: {fileID: 3418980153528766422}
   _catButton: {fileID: 7821839031032904271}
@@ -649,6 +650,7 @@ MonoBehaviour:
   _showAnswerButtonAtOnce: 1
   _answerButton: {fileID: 3477204738354355461}
   _answerButtonText: {fileID: 4373516676253049091}
+  _noAudio: 0
   _tutorialFinger: {fileID: 8124440257024330018}
 --- !u!114 &1860016812173737957
 MonoBehaviour:
@@ -1669,6 +1671,10 @@ PrefabInstance:
     - target: {fileID: 7185802017234900003, guid: a454cc821da5e1b419971d0230763865, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7942468345822059732, guid: a454cc821da5e1b419971d0230763865, type: 3}
+      propertyPath: _maxTime
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8974865717979555190, guid: a454cc821da5e1b419971d0230763865, type: 3}
       propertyPath: m_Name
