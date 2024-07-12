@@ -1,5 +1,6 @@
 ﻿using __Game.Resources.Scripts.EventBus;
 using Assets.__Game.Resources.Scripts.Game.States;
+using Assets.__Game.Scripts.Infrastructure;
 using Assets.__Game.Scripts.Tools;
 using System.Collections;
 using UnityEngine;
@@ -22,6 +23,7 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
 
     private AudioSource _audioSource;
 
+    private GameBootstrapper _gameBootstrapper;
     private AudioTool _audioTool;
 
     private EventBinding<EventStructs.StateChanged> _stateEvent;
@@ -30,14 +32,14 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
     private EventBinding<EventStructs.VariantAudioClickedEvent> _variantAudioClickedEvent;
     private EventBinding<EventStructs.VoiceButtonAudioEvent> _voiceButtonAudioEvent;
 
-    private void Awake()
-    {
-      _audioSource = GetComponent<AudioSource>();
+    private void Awake() {
+      _gameBootstrapper = GameBootstrapper.Instance;
       _audioTool = new AudioTool(_audioSource);
+
+      _audioSource = GetComponent<AudioSource>();
     }
 
-    private void OnEnable()
-    {
+    private void OnEnable() {
       _stateEvent = new EventBinding<EventStructs.StateChanged>(PlayScreenSound);
       _stuporEvent = new EventBinding<EventStructs.StuporEvent>(PlayStuporSound);
       //_uiButtonEvent = new EventBinding<EventStructs.UiButtonEvent>(PlayQuestClipsSequentially);
@@ -45,8 +47,7 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
       _voiceButtonAudioEvent = new EventBinding<EventStructs.VoiceButtonAudioEvent>(PlayButtonVoice);
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable() {
       _stateEvent.Remove(PlayScreenSound);
       _stuporEvent.Remove(PlayStuporSound);
       //_uiButtonEvent.Remove(PlayQuestClipsSequentially);
@@ -54,16 +55,13 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
       _voiceButtonAudioEvent.Remove(PlayButtonVoice);
     }
 
-    private void Start()
-    {
-      if (_questStartClip != null)
+    private void Start() {
+      if (_questStartClip != null && _gameBootstrapper.StateMachine.CurrentState is GameQuestState)
         _audioSource.PlayOneShot(_questStartClip);
     }
 
-    private void PlayScreenSound(EventStructs.StateChanged state)
-    {
-      switch (state.State)
-      {
+    private void PlayScreenSound(EventStructs.StateChanged state) {
+      switch (state.State) {
         case GameWinState:
           _audioSource.Stop();
           _audioSource.PlayOneShot(_audioTool.GetRandomCLip(_winAnnouncerClips));
@@ -75,39 +73,33 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
       }
     }
 
-    private void PlayButtonVoice(EventStructs.VoiceButtonAudioEvent voiceButtonAudioEvent)
-    {
+    private void PlayButtonVoice(EventStructs.VoiceButtonAudioEvent voiceButtonAudioEvent) {
       _audioSource.Stop();
       _audioSource.PlayOneShot(voiceButtonAudioEvent.AudioClip);
     }
 
-    private void PlayStuporSound(EventStructs.StuporEvent stuporEvent)
-    {
+    private void PlayStuporSound(EventStructs.StuporEvent stuporEvent) {
       _audioSource.Stop();
       _audioSource.PlayOneShot(_audioTool.GetRandomCLip(_stuporAnnouncerClips));
     }
 
-    public void PlayQuestClipsSequentially(EventStructs.UiButtonEvent uiButtonEvent)
-    {
+    public void PlayQuestClipsSequentially(EventStructs.UiButtonEvent uiButtonEvent) {
       if (_questClipsArePlayed == true) return;
 
       _questClipsArePlayed = true;
 
-      if (uiButtonEvent.UiEnums == __Game.Scripts.Enums.UiEnums.QuestPlayButton)
-      {
+      if (uiButtonEvent.UiEnums == __Game.Scripts.Enums.UiEnums.QuestPlayButton) {
         if (_questClips.Length > 0)
           StartCoroutine(DoPlayClipsSequentially(_questClips));
       }
     }
 
-    private IEnumerator DoPlayClipsSequentially(AudioClip[] clips)
-    {
+    private IEnumerator DoPlayClipsSequentially(AudioClip[] clips) {
       if (_questClips.Length == 0) yield break;
 
       yield return new WaitForSecondsRealtime(0.1f);
 
-      foreach (var clip in clips)
-      {
+      foreach (var clip in clips) {
         _audioSource.Stop();
         _audioSource.PlayOneShot(clip);
 
@@ -115,10 +107,8 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
       }
     }
 
-    private void PlayWordAudioCLip(EventStructs.VariantAudioClickedEvent variantAudioClickedEvent)
-    {
-      if (variantAudioClickedEvent.AudioClip != null)
-      {
+    private void PlayWordAudioCLip(EventStructs.VariantAudioClickedEvent variantAudioClickedEvent) {
+      if (variantAudioClickedEvent.AudioClip != null) {
         _audioSource.Stop();
         _audioSource.PlayOneShot(variantAudioClickedEvent.AudioClip);
       }

@@ -1142,7 +1142,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "\u0421\u041A\u0406\u041B\u042C\u041A\u0418 \u041A\u041E\u0428\u0415\u041D\u042F\u0422
-    \u041D\u0410 \u041C\u0410\u041B\u042E\u041D\u041A\u0423 ?"
+    \u041D\u0410 \u041C\u0410\u041B\u042E\u041D\u041A\u0423?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8c8033d0da7c1ea4292e133fc00b3f41, type: 2}
   m_sharedMaterial: {fileID: 1802962409221402600, guid: 8c8033d0da7c1ea4292e133fc00b3f41, type: 2}
@@ -6371,7 +6371,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "\u0421\u041A\u0406\u041B\u042C\u041A\u0418 \u041A\u041E\u0428\u0415\u041D\u042F\u0422
-    \u041D\u0410 \u041C\u0410\u041B\u042E\u041D\u041A\u0423 ?"
+    \u041D\u0410 \u041C\u0410\u041B\u042E\u041D\u041A\u0423?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8c8033d0da7c1ea4292e133fc00b3f41, type: 2}
   m_sharedMaterial: {fileID: 1802962409221402600, guid: 8c8033d0da7c1ea4292e133fc00b3f41, type: 2}
@@ -7397,7 +7397,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1952100302
 RectTransform:
   m_ObjectHideFlags: 0

@@ -14,70 +14,73 @@ namespace Assets.__Game.Scripts.Infrastructure
     public FiniteStateMachine StateMachine;
     public SceneLoader SceneLoader;
 
-    public GameBootstrapper()
-    {
+    private bool _questStateOnce;
+
+    public GameBootstrapper() {
       StateMachine = new FiniteStateMachine();
       SceneLoader = new SceneLoader();
     }
 
     private EventBinding<EventStructs.UiButtonEvent> _uiButtonEvent;
 
-    private void Awake()
-    {
+    private void Awake() {
       SettingsManager.ResetSettings();
       InitSingleton();
     }
 
-    private void OnEnable()
-    {
+    private void OnEnable() {
       _uiButtonEvent = new EventBinding<EventStructs.UiButtonEvent>(ChangeState);
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable() {
       _uiButtonEvent.Remove(ChangeState);
     }
 
-    private void Start()
-    {
-      SceneLoader.LoadSceneAsyncWithDelay(Hashes.GameScene, 2f, this, () =>
-      {
-        StateMachine.Init(new GameQuestState(this));
+    private void Start() {
+      SceneLoader.LoadSceneAsyncWithDelay(Hashes.GameScene, 2f, this, () => {
+        if (_questStateOnce == false) {
+          StateMachine.Init(new GameQuestState(this));
+
+          _questStateOnce = true;
+        }
+        else {
+          StateMachine.ChangeState(new GameplayState(this));
+        }
 
         EventBus<EventStructs.ComponentEvent<GameBootstrapper>>.Raise(
           new EventStructs.ComponentEvent<GameBootstrapper> { Data = this });
       });
     }
 
-    public void RestartLevel()
-    {
-      SceneLoader.RestartSceneAsync(() =>
-      {
-        StateMachine.Init(new GameQuestState(this));
+    public void RestartLevel() {
+      SceneLoader.RestartSceneAsync(() => {
+        if (_questStateOnce == false) {
+          StateMachine.Init(new GameQuestState(this));
+
+          _questStateOnce = true;
+        }
+        else {
+          StateMachine.ChangeState(new GameplayState(this));
+        }
 
         EventBus<EventStructs.ComponentEvent<GameBootstrapper>>.Raise(
           new EventStructs.ComponentEvent<GameBootstrapper> { Data = this });
       });
     }
 
-    private void InitSingleton()
-    {
-      if (Instance != null && Instance != this)
-      {
+    private void InitSingleton() {
+      if (Instance != null && Instance != this) {
         Destroy(gameObject);
       }
-      else
-      {
+      else {
         Instance = this;
 
         DontDestroyOnLoad(gameObject);
       }
     }
 
-    private void ChangeState(EventStructs.UiButtonEvent uiButtonEvent)
-    {
-      switch (uiButtonEvent.UiEnums)
-      {
+    private void ChangeState(EventStructs.UiButtonEvent uiButtonEvent) {
+      switch (uiButtonEvent.UiEnums) {
         case UiEnums.QuestPlayButton:
           StateMachine.ChangeState(new GameplayState(this));
           break;
